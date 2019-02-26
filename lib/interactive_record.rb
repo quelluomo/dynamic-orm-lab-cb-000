@@ -55,8 +55,10 @@ class InteractiveRecord
   end
 
   def self.find_by(hash)
-    key = hash.keys[0]
-    sql = "SELECT * FROM #{self.table_name} WHERE #{key.to_s} = '#{hash[key]}'"
+    key = hash.keys.first
+    value = hash.values.first
+    formatted_value = value.class == Fixnum ? value : "'#{value}'"
+    sql = "SELECT * FROM #{self.table_name} WHERE #{key} = '#{formatted_value}'"
     DB[:conn].execute(sql)
   end
 
